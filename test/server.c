@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/24 16:11:31 by tbalea            #+#    #+#             */
-/*   Updated: 2015/12/25 14:09:58 by tbalea           ###   ########.fr       */
+/*   Updated: 2015/12/27 17:11:10 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	cmd_client(int cs, char *sd)
 }
 
 //	Reset the message to send/receiv
-static char	*reset_msg(char *msg, int old_size, int new_size)
+/*static char	*reset_msg(char *msg, int old_size, int new_size)
 {
 	if (old_size > 0)
 	{
@@ -42,7 +42,7 @@ static char	*reset_msg(char *msg, int old_size, int new_size)
 		return (msg);
 	}
 	return (NULL);
-}
+}*/
 
 //	Close client connection
 static int	end_sock(int socket, char *pwd, char *recv, int type)
@@ -63,14 +63,18 @@ static int	end_sock(int socket, char *pwd, char *recv, int type)
 static int	client(int cs)
 {
 	int		n;
-	char	*msg;
 	char	*pwd;
-	int		child;
+//	<==>--<==>--<==>
+	char	*rc;
+	char	*sd;
+//	<==>--<==>--<==>
+//	int		child;
+//	char	*msg;
 
 	cmd_client(cs, "connected");
 	pwd = getcwd(NULL, 0);
 //	<==>--<==>--<==>
-	if ((child = fork()) < 0)
+/*	if ((child = fork()) < 0)
 		return (end_sock(cs, pwd, NULL, -7));
 	if (child == 0)
 	{
@@ -95,8 +99,8 @@ static int	client(int cs)
 		}
 		return (end_sock(cs, pwd, msg, -5));
 	}
-}
-/*	<==>--<==>--<==>
+}*/
+//	<==>--<==>--<==>
 	while (42)
 	{
 		rc = (char *)ft_memalloc(1024);
@@ -120,7 +124,7 @@ static int	client(int cs)
 			return (end_sock(cs, pwd, rc, 1));
 	}
 }
-*/
+//	<==>--<==>--<==>
 
 int			main(int argv, char** argc)
 {

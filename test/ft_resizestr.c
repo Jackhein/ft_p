@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   ft_resizestr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/22 16:52:46 by tbalea            #+#    #+#             */
-/*   Updated: 2015/12/30 21:55:47 by tbalea           ###   ########.fr       */
+/*   Created: 2015/12/30 21:33:54 by tbalea            #+#    #+#             */
+/*   Updated: 2015/12/30 21:58:00 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "libft.h"
 
-# include "ft_p.h"
-
-int	create_client(char *addr, char *port);
-int	client_error(int type, int sock);
-int	client_spec_cmd(char *buff, int sock);
-int	client_rcv(int sock, char **rc);
-
-#endif
+void	ft_resizestr(char **str, int empty, int fill)
+{
+	if (empty >= 0)
+	{
+		ft_bzero(*str, empty);
+		free(*str);
+	}
+	if (fill >= 0)
+	{
+		*str = (char *)malloc(fill * sizeof(char));
+		ft_bzero(*str, fill);
+	}
+}

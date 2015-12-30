@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/31 16:01:07 by tbalea            #+#    #+#             */
-/*   Updated: 2015/12/25 10:01:13 by tbalea           ###   ########.fr       */
+/*   Updated: 2015/12/29 18:03:39 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,12 @@ char		*server_ls(char *buff, int sock)
 	int		i;
 	int		s;
 	int		child;
+	int		y;
 
+	y = -1;
 	tab = ft_strsplit(buff, ' ');
+	while (tab[++y])
+		ft_putendl(tab[y]);
 //	if (secur_ls(org, tab) < 0);
 //		return ("ls function fail - Access denied");
 	if ((child = fork()) < 0)

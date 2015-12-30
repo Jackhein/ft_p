@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   client_rcv.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/22 16:52:46 by tbalea            #+#    #+#             */
-/*   Updated: 2015/12/30 21:55:47 by tbalea           ###   ########.fr       */
+/*   Created: 2015/12/30 21:22:04 by tbalea            #+#    #+#             */
+/*   Updated: 2015/12/30 22:39:47 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "client.h"
 
-# include "ft_p.h"
+int			client_rcv(int sock, char **rc)
+{
+	int	n;
 
-int	create_client(char *addr, char *port);
-int	client_error(int type, int sock);
-int	client_spec_cmd(char *buff, int sock);
-int	client_rcv(int sock, char **rc);
-
-#endif
+	ft_resizestr(rc, 1024, 1024);
+	while ((n = recv(sock, *rc, 1024, 0)) != 0)
+	{
+		if (n < 0)
+			return (-1);
+		if (n < 1024)
+			break ;
+		ft_putstr(*rc);
+		ft_resizestr(rc, 1024, 1024);
+	}
+	ft_putendl(*rc);
+	return (1);
+}

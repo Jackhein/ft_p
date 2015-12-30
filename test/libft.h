@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>          +#+  +:+       +#+            */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/15 18:03:32 by tbalea          #+#    #+#               */
-/*   Updated: 2015/06/13 15:05:35 by tbalea           ###   ########.fr       */
+/*   Updated: 2015/12/30 21:33:03 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char				*ft_strnew(size_t size);
 char				**ft_strsplit(const char *s, const char c);
 int					ft_atoi(const char *str);/*
 int					ft_isalpha(int c);*/
+int					ft_isempty(char c);
 int					ft_isdigit(int c);/*
 int					ft_isalnum(int c);
 int					ft_isascii(int c);
@@ -86,7 +87,9 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putendl_fd(char const *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
-void				ft_putnbrendl_fd(int n, int fd);
+void				ft_putnbrendl_fd(int n, int fd);*/
+char				*ft_strdelvoid(char *str);
+void				ft_resizestr(char **str, int empty, int fill);/*
 
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));

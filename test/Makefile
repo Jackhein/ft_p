@@ -6,7 +6,7 @@
 #    By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/26 19:02:12 by tbalea            #+#    #+#              #
-#    Updated: 2015/06/03 19:51:57 by tbalea           ###   ########.fr        #
+#    Updated: 2015/12/30 21:57:28 by tbalea           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,8 @@ NAME = ft_p
 
 CLT = client.c\
 	  client_error.c\
+	  client_spec_cmd.c\
+	  client_rcv.c\
 	  create_client.c\
 
 SER = create_server.c\
@@ -27,9 +29,11 @@ SER = create_server.c\
 SRC = ft_atoi.c\
 	  ft_itoa.c\
 	  ft_bzero.c\
+	  ft_isempty.c\
 	  ft_isdigit.c\
 	  ft_strlen.c\
 	  ft_strcmp.c\
+	  ft_strdelvoid.c\
 	  ft_strncmp.c\
 	  ft_strnew.c\
 	  ft_strsplit.c\
@@ -42,6 +46,7 @@ SRC = ft_atoi.c\
 	  ft_putchar.c\
 	  ft_putstr.c\
 	  ft_putendl.c\
+	  ft_resizestr.c\
 	  get_next_line.c\
 
 FLG = -Wall -Werror -Wextra -g3
