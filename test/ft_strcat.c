@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tabdel.c                                     :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-heyge <nd-heyge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/06/13 14:56:17 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/06 23:41:25 by tbalea           ###   ########.fr       */
+/*   Created: 2014/04/14 18:29:23 by nd-heyge          #+#    #+#             */
+/*   Updated: 2016/01/06 21:11:35 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_tabdel(char **tab)
+char	*ft_strcat(char *s1, const char *s2)
 {
-	int	i;
-
-	if (!tab)
-		return ;
-	i = 0;
-	while (tab[i] != NULL)
-		i++;
-	while (--i >= 0)
-		ft_memdel((void **)&tab[i]);
-	free(tab);
-	tab = NULL;
+	return (ft_strncat(s1, s2, ft_strlen(s2)));
 }

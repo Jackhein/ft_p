@@ -6,12 +6,13 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/22 16:54:12 by tbalea            #+#    #+#             */
-/*   Updated: 2015/12/30 22:58:45 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/10 15:51:36 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 #include <stdio.h>
+#include <signal.h>
 
 //	To Do :
 //	-Fork
@@ -21,52 +22,115 @@
 
 static int	state(char **rc)
 {
-	if (*rc == NULL
-			|| ft_strcmp("quit", *rc) != 0
-			|| ft_strcmp("exit", *rc) != 0)
+	if (*rc == NULL || ft_strcmp("quit", *rc) != 0)
 	{
 		ft_resizestr(rc, ft_strlen(*rc), 1024);
-		ft_putstr("~nipaa~ ");
+		ft_putstr("\n~nipaa~ ");
 		return (1);
 	}
 	ft_resizestr(rc, ft_strlen(*rc), -1);
-	ft_putendl("Goodbye.");
+	ft_putendl("\nGoodbye.");
 	return (0);
+}
+
+static int	client_send(int sock)
+{
+	int		n;
+	char	*buff;
+
+	while (get_next_line(0, &buff) >= 0
+//			 && (((n = client_spec_cmd((buff = ft_strdelvoid(buff)), sock)) > 0)
+//			|| (n == 0
+			&& send(sock, ft_itoa((n = ft_strlen(buff))), 1024, 0) >= 0
+			&& send(sock, buff, ft_strlen(buff), 0) >= 0)//))
+		;
+//		ft_putendl("testo");
+	return (client_error(-4, sock));
+}
+
+static int	client_recv(int sock)
+{
+	char	*rc;
+//	int		n;
+
+	rc = NULL;
+	while (state(&rc) != 0)
+	{
+		if (recv(sock, rc, 1024, 0) < 0)
+			return (client_error(-5, sock));
+		ft_putstr(rc);
+//		ft_resizestr(&rc, 1024, 1024);
+	}
+	return (1);
 }
 
 int			main(int argv, char** argc)
 {
-	char	*buff;
-	char	*rc;
+//	char	*buff;
+//	char	*child_pid;
+//	char	*rc;
 	int		sock;
-	int		n;
-//	int		child;
+//	int		n;
+	int		child;
+	int		pipefd[2];
+	int		ret;
 
-	rc = NULL;
+//	rc = NULL;
+//	child_pid = NULL;
+	ret = 1;
 	if (argv != 3)
 		return (client_error(-1, 0));
-	if ((sock = create_client(argc[1], argc[2])) < 0)
+	if ((sock = client_create(argc[1], argc[2])) < 0)
 		return (sock);
 //	<==>--<==>--<==>
 //	fork recv & send
 //	<==>--<==>--<==>
-	while (state(&rc))
+	if (pipe(pipefd) < 0)
+		return (client_error(-5, sock));
+	else if ((child = fork()) < 0)
+		return (client_error(-6, sock));
+	else if (child == 0)
+	{
+//		if ((read(pipefd[1], child_pid, 1024)) == -1)
+//			ft_putendl("testo");
+//		ft_putendl(child_pid);
+//		child = ft_atoi(child_pid);
+		ret = client_recv(sock);
+		kill(0/*ft_atoi(child_pid)*/, SIGTERM);
+	}
+	else
+	{
+//		write(pipefd[0], ft_itoa(child), ft_strlen(ft_itoa(child)));
+		ret = client_send(sock);
+		kill(0, SIGTERM);
+	}
+	return (ret);
+}
+//	<==>--<==>--<==>
+//	fork recv & send <= without
+//	<==>--<==>--<==>
+/*	while (state(&rc))
 	{
 		if (get_next_line(0, &buff) < 0)
 			return (client_error(-4, sock));
+//		ft_putendl("testo-0");
 		if (((n = client_spec_cmd((buff = ft_strdelvoid(buff)), sock)) < 0)
 				|| (n == 0
 				&& (send(sock, ft_itoa((n = ft_strlen(buff))), 1024, 0) < 0
 				|| send(sock, buff, ft_strlen(buff), 0) < 0)))
 			return (client_error(-4, sock));
+//		ft_putendl("testo-1");
 		if ((n = client_rcv(sock, &rc)) == -1)
 			return (client_error(-5, sock));
+//		ft_putendl("testo-2");
 //	<==>--<==>--<==>
 //	recv in one time
 //	<==>--<==>--<==>
 	}
 	return (1);
-}
+}*/
+
+
 //	<==>--<==>--<==>
 //	fork recv & send
 //	<==>--<==>--<==>

@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_error.c                                     :+:      :+:    :+:   */
+/*   ft_strdelelem.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/28 12:02:53 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/04 20:47:26 by tbalea           ###   ########.fr       */
+/*   Created: 2016/01/08 10:48:43 by tbalea            #+#    #+#             */
+/*   Updated: 2016/01/08 10:51:24 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#inlcude "libft.h"
 
-static const char* msg[] = {"Usage: ./client <addr> <port>",
-	"Invalide host error", "Connection error", "Send error", "Recv error",
-	"Pipe client error", "Fork client error"};
-
-int	client_error(int type, int sock)
+void	ft_strdelelem(char **str, int i)
 {
-	if (sock)
-		close(sock);
-	ft_putendl(msg[-1 * type - 1]);
-	return (type);
+	if (!str || i < 0 || i > ft_strlen(str))
+		return ;
+	while (str[++i])
+		str[i - 1] = str[i];
+	str[i - 1] = '\0';
 }

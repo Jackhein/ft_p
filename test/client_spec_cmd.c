@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/30 20:49:53 by tbalea            #+#    #+#             */
-/*   Updated: 2015/12/30 22:57:02 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/03 14:24:20 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int	client_ls(char *buff, int sock)
 		|| send(sock, buff, ft_strlen(buff), 0) < 0)
 		return (-1);
 	ft_resizestr(&rc, -1, 1024);
-	client_rcv(sock, &rc);
+	if ((n = client_rcv(sock, &rc)) == -1)
+		return (-1);
 	ft_resizestr(&rc, 1024, -1);
 	return (1);
 }

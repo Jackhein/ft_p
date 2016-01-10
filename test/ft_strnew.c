@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-heyge <nd-heyge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/31 17:10:08 by tbalea            #+#    #+#             */
-/*   Updated: 2015/05/31 17:11:38 by tbalea           ###   ########.fr       */
+/*   Created: 2014/04/14 19:50:37 by nd-heyge          #+#    #+#             */
+/*   Updated: 2016/01/06 21:11:46 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnew(size_t n)
+char		*ft_strnew(size_t size)
 {
-	return ((char *)ft_memalloc(n + 1));
+	return ((char *)ft_memalloc(size + 1));
 }

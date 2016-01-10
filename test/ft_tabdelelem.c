@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_error.c                                     :+:      :+:    :+:   */
+/*   ft_tabdelelem.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/28 12:02:53 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/04 20:47:26 by tbalea           ###   ########.fr       */
+/*   Created: 2016/01/06 17:10:19 by tbalea            #+#    #+#             */
+/*   Updated: 2016/01/07 18:14:05 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#include "libft.h"
 
-static const char* msg[] = {"Usage: ./client <addr> <port>",
-	"Invalide host error", "Connection error", "Send error", "Recv error",
-	"Pipe client error", "Fork client error"};
-
-int	client_error(int type, int sock)
+void		ft_tabdelelem(char **tab, int i)
 {
-	if (sock)
-		close(sock);
-	ft_putendl(msg[-1 * type - 1]);
-	return (type);
+	int		k;
+
+	k = 0;
+	while (tab && tab[k])
+		k++;
+	if (k < i || i < 0 || !tab)
+		return ;
+	k = i;
+	while (tab[++k])
+	{
+		ft_memdel((void **)&tab[i]);
+		tab[i] = ft_strdup(tab[k]);
+		i++;
+	}
+	tab[i] = NULL;
 }

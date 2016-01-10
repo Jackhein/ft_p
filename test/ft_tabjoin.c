@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_error.c                                     :+:      :+:    :+:   */
+/*   ft_tabjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/28 12:02:53 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/04 20:47:26 by tbalea           ###   ########.fr       */
+/*   Created: 2016/01/06 21:24:04 by tbalea            #+#    #+#             */
+/*   Updated: 2016/01/08 12:16:04 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#include "libft.h"
 
-static const char* msg[] = {"Usage: ./client <addr> <port>",
-	"Invalide host error", "Connection error", "Send error", "Recv error",
-	"Pipe client error", "Fork client error"};
+/*
+ *
+ *	Join each element of **tab to one string with character 'c'
+ *
+*/
 
-int	client_error(int type, int sock)
+char	*ft_tabjoin(const char **tab, const char *sep)
 {
-	if (sock)
-		close(sock);
-	ft_putendl(msg[-1 * type - 1]);
-	return (type);
+	int		i;
+	char	*str;
+
+	if (!tab)
+		return (NULL);
+	str = NULL;
+	i = -1;
+	while (tab[++i])
+	{
+		if (str != NULL)
+			str = ft_strjoin(str, sep);
+		str = ft_strjoin(str, tab[i]);
+	}
+	return (str);
 }

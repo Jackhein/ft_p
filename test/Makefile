@@ -6,7 +6,7 @@
 #    By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/26 19:02:12 by tbalea            #+#    #+#              #
-#    Updated: 2015/12/30 21:57:28 by tbalea           ###   ########.fr        #
+#    Updated: 2016/01/08 16:27:53 by tbalea           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,12 +16,13 @@ CLT = client.c\
 	  client_error.c\
 	  client_spec_cmd.c\
 	  client_rcv.c\
-	  create_client.c\
+	  client_create.c\
 
-SER = create_server.c\
+SER = server_create.c\
 	  server_cd.c\
 	  server_ls.c\
 	  server_cmd.c\
+	  server_epur_access_arg.c\
 	  server_error.c\
 	  server_pwd.c\
 	  server.c\
@@ -36,7 +37,9 @@ SRC = ft_atoi.c\
 	  ft_strdelvoid.c\
 	  ft_strncmp.c\
 	  ft_strnew.c\
+	  ft_tabjoin.c\
 	  ft_strsplit.c\
+	  ft_strjoin.c\
 	  ft_strtrim.c\
 	  ft_memalloc.c\
 	  ft_memchr.c\
@@ -47,7 +50,12 @@ SRC = ft_atoi.c\
 	  ft_putstr.c\
 	  ft_putendl.c\
 	  ft_resizestr.c\
+	  ft_tabdel.c\
+	  ft_tabdelelem.c\
 	  get_next_line.c\
+	  ft_strcat.c\
+	  ft_strncat.c\
+	  ft_strdup.c\
 
 FLG = -Wall -Werror -Wextra -g3
 

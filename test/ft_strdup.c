@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tabdel.c                                     :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-heyge <nd-heyge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/06/13 14:56:17 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/06 23:41:25 by tbalea           ###   ########.fr       */
+/*   Created: 2014/04/14 18:04:38 by nd-heyge          #+#    #+#             */
+/*   Updated: 2016/01/06 21:11:24 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_tabdel(char **tab)
+char		*ft_strdup(const char *s1)
 {
-	int	i;
+	char	*dest;
+	int		i;
 
-	if (!tab)
-		return ;
+	dest = NULL;
 	i = 0;
-	while (tab[i] != NULL)
+	dest = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	while (s1[i] != '\0')
+	{
+		dest[i] = s1[i];
 		i++;
-	while (--i >= 0)
-		ft_memdel((void **)&tab[i]);
-	free(tab);
-	tab = NULL;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

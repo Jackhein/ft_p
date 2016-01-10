@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/24 16:11:31 by tbalea            #+#    #+#             */
-/*   Updated: 2015/12/27 17:11:10 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/08 16:09:47 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,22 @@ static int	client(int cs)
 			return (end_sock(cs, pwd, rc, -5));
 //		ft_putendl(rc);
 		sd = server_cmd(rc, pwd, cs);
-		ft_putendl("before send");
-		ft_putendl(sd);
+//		ft_putendl("before send");
+//		ft_putendl(sd);
 		cmd_client(cs, sd);
-		if (send(cs, ft_itoa(ft_strlen(sd)), 1024, MSG_DONTWAIT) < 0 ||
+//		ft_putstr("send:");
+//		ft_putstr(ft_itoa(ft_strlen(sd)));
+//		ft_putstr("<=>");
+//		ft_putendl(sd);
+		if (//send(cs, ft_itoa(ft_strlen(sd)), 1024, MSG_DONTWAIT) < 0 ||
 			send(cs, sd, ft_strlen(sd), MSG_DONTWAIT) < 0)
 			return (end_sock(cs, pwd, rc, -6));
+//		ft_putendl("sended");
 		if (ft_strcmp("quit", sd) == 0)
+//		{
+//			ft_putendl("quit/exit");
 			return (end_sock(cs, pwd, rc, 1));
+//		}
 	}
 }
 //	<==>--<==>--<==>
@@ -138,7 +146,7 @@ int			main(int argv, char** argc)
 	if (argv != 2)
 		return (server_error(-1));
 	port = ft_atoi(argc[1]);
-	if ((sock = create_server(port)) < 0)
+	if ((sock = server_create(port)) < 0)
 		return (sock);
 	while (42)
 	{
