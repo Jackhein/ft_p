@@ -5,48 +5,67 @@
 #                                                     +:+ +:+         +:+      #
 #    By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/05/24 18:06:02 by tbalea            #+#    #+#              #
-#    Updated: 2015/05/24 18:45:57 by tbalea           ###   ########.fr        #
+#    Created: 2015/05/26 19:02:12 by tbalea            #+#    #+#              #
+#    Updated: 2016/01/08 16:27:53 by tbalea           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_p
 
+CLT = client.c\
+	  client_error.c\
+	  client_spec_cmd.c\
+	  client_rcv.c\
+	  client_create.c\
+
+SER = server_create.c\
+	  server_cd.c\
+	  server_ls.c\
+	  server_cmd.c\
+	  server_epur_access_arg.c\
+	  server_error.c\
+	  server_pwd.c\
+	  server.c\
+
+SRC = ft_atoi.c\
+	  ft_itoa.c\
+	  ft_bzero.c\
+	  ft_isempty.c\
+	  ft_isdigit.c\
+	  ft_strlen.c\
+	  ft_strcmp.c\
+	  ft_strdelvoid.c\
+	  ft_strncmp.c\
+	  ft_strnew.c\
+	  ft_tabjoin.c\
+	  ft_strsplit.c\
+	  ft_strjoin.c\
+	  ft_strtrim.c\
+	  ft_memalloc.c\
+	  ft_memchr.c\
+	  ft_memcpy.c\
+	  ft_memdel.c\
+	  ft_memset.c\
+	  ft_putchar.c\
+	  ft_putstr.c\
+	  ft_putendl.c\
+	  ft_resizestr.c\
+	  ft_tabdel.c\
+	  ft_tabdelelem.c\
+	  get_next_line.c\
+	  ft_strcat.c\
+	  ft_strncat.c\
+	  ft_strdup.c\
+
+FLG = -Wall -Werror -Wextra -g3
+
 all: $(NAME)
 
 $(NAME):
-	make -C Libft/
-	make -C Server/
-	make -C Client/
+	gcc $(FLG) $(SRC) $(CLT) -o client
+	gcc $(FLG) $(SRC) $(SER) -o serveur
 
-server:
-	make -C Libft/
-	make -C Server/
+fclean:
+	rm -f client serveur
 
-client:
-	make -C Libft/
-	make -C Client/
-
-clean_client:
-	make -C Client/ clean
-
-clean_server:
-	make -C Server/ clean
-
-clean_libft:
-	make -C Libft/ clean
-
-clean: clean_server clean_client clean_libft
-
-fclean_client:
-	make -C Client/ fclean
-
-fclean_server:
-	make -C Server/ fclean
-
-fclean_libft:
-	make -C Libft/ fclean
-
-fclean: fclean_server fclean_client fclean_libft
-
-re: fclean_all all
+re: fclean all

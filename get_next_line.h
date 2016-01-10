@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_p.h                                             :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbalea <tbalea@student.42.fr>            +#+  +:+       +#+          */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/24 16:50:30 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 16:38:46 by tbalea           ###   ########.fr       */
+/*   Created: 2014/04/23 17:31:23 by tbalea          #+#    #+#               */
+/*   Updated: 2015/05/28 15:11:15 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_P_H
-# define FT_P_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# include <sys/socket.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 # include <sys/types.h>
-# include <sys/dir.h>
 # include <sys/stat.h>
-# include <netdb.h>
-# include <netinet/in.h>
 # include <fcntl.h>
-# include <arpa/inet.h>
-
 # include "libft.h"
-# include "get_next_line.h"
 
-typedef struct sockaddr_in SOKADR_IN;
-typedef struct sockaddr SOKADR;
-typedef struct in_addr I_ADR;
+# define BUFF_SIZE 1
 
-int	transfer_put(char *arg, int socket);
+typedef struct		s_info
+{
+	char			*start;
+	char			*buf;
+	int				fd;
+	int				offset;
+	struct s_info	*next;
+}					t_info;
+
+int					get_next_line(int const fd, char **line);
 
 #endif

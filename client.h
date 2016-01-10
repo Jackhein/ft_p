@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_p.h                                             :+:      :+:    :+:   */
+/*   client.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/24 16:50:30 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 16:38:46 by tbalea           ###   ########.fr       */
+/*   Created: 2015/05/22 16:52:46 by tbalea            #+#    #+#             */
+/*   Updated: 2016/01/08 16:27:26 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_P_H
-# define FT_P_H
+#ifndef CLIENT_H
+# define CLIENT_H
 
-# include <sys/socket.h>
-# include <sys/types.h>
-# include <sys/dir.h>
-# include <sys/stat.h>
-# include <netdb.h>
-# include <netinet/in.h>
-# include <fcntl.h>
-# include <arpa/inet.h>
+# include "ft_p.h"
 
-# include "libft.h"
-# include "get_next_line.h"
-
-typedef struct sockaddr_in SOKADR_IN;
-typedef struct sockaddr SOKADR;
-typedef struct in_addr I_ADR;
-
-int	transfer_put(char *arg, int socket);
+int	client_create(char *addr, char *port);
+int	client_error(int type, int sock);
+int	client_spec_cmd(char *buff, int sock);
+int	client_rcv(int sock, char **rc);
 
 #endif

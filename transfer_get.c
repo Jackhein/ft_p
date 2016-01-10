@@ -6,17 +6,22 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 20:28:56 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 21:26:01 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/10 16:37:14 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_p.h"
 
 /**
+ *	NORME
  *	PERMISSION
+ *	BINARY
+ *	END OF PUT
 **/
 static const char*	msg[] = {"name disponible", "is a directory", "is a file",
 	"no right"};
+
+static int	transfer_get_error(int socket, int error);
 
 static int	transfer_get_check(int socket, char *name)
 {
@@ -64,7 +69,9 @@ static int	transfer_get_dir(int socket, char *name, bool exist)
 			&& (e = recv(socket, buf, 1024, 0)) >= 0)
 		e = transfer_get(socket);
 	ft_memdel((void **)&buf);
-	return ((e < 0 || (e = chdir("..")) < 0) ? e : 1);
+	if (e < 0 || (e = chdir("..")) < 0)
+		return (e);
+	return (1);
 }
 
 static int	transfer_get_file(int socket, char *name)
@@ -73,7 +80,6 @@ static int	transfer_get_file(int socket, char *name)
 	int		fd;
 	off_t	eof;
 	char	buf[1024];
-	char	*crypt;
 
 	if ((fd = recv(socket, buf, 1024, 0)) < 0
 			|| (fd = open(name, O_CREAT, /*FLAG RIGHT*/)) < 0)
@@ -86,14 +92,14 @@ static int	transfer_get_file(int socket, char *name)
 	while (((e = recv(socket, buf, 1024, 0)) >= 0
 			&& ft_strcmp(buf, "end put") != 0) || e < 0)
 	{
-		crypt = decrypting(buf);
 		eof = lseek(fd, 0, SEEK_END);
-		e = write(eof, crypt, ft_strlen(buf));
-		ft_memdel((void **)&crypt);
+		e = write(eof, transfer_decrypt(buf), ft_strlen(buf));
 	}
 	close(fd);
 	ft_memdel((void **)&buf);
-	return (e < 0 ? e : 1);
+	if (e < 0)
+		return (e);
+	return (1);
 }
 
 int			transfer_get(int socket)
@@ -117,12 +123,15 @@ int			transfer_get(int socket)
 	else if (type == 1 && ft_strcmp("directory", buf) == 0)
 		e = transfer_get_dir(socket, name, false);
 //		function get_dir with FLAG already existing
-	else if (type == 0 && ft_strcmp("directory", buf) == 0)
+	else if (type == 0)
+	{
 //		function get_dir without FLAG already existing
-		e = transfer_get_dir(socket, name, true);
-	else if (type == 0 && ft_strcmp(buf, "file") == 0)
+		if (ft_strcmp("directory", buf) == 0)
+			e = transfer_get_dir(socket, name, true);
 //		function get_file
-		e = transfer_get_file(socket, name);
+		else if (ft_strcmp(buf, "file") == 0)
+			e = transfer_get_file(socket, name);
+	}
 	ft_memdel((void **)&buf);
 	return (e);
 }

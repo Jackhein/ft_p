@@ -6,17 +6,11 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 16:24:26 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 21:25:49 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/10 14:24:39 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_p.h"
-
-/*
-**
-**	Encrypt send file
-**
-*/
 
 static const char* msg[] = {"fstats function error", "no permission",
 	"Name already taken"};
