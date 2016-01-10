@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/10 20:48:43 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 21:11:45 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/10 23:57:14 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ char	*crypting(char *txt)
 	int		i;
 
 	len = 0;
-	while (str[len])
+	while (txt[len])
 		len++;
 	crypt = (char *)malloc((len * 2 + 1) * sizeof(char));
 	i = 0;
 	while (i < len)
 	{
-		result[i * 2] = 'a' + ((str[i] >> 4) & 15);
-		result[i * 2 + 1] = 'a' + ((str[i] >> 4) & 15);
+		crypt[i * 2] = 'a' + ((txt[i] >> 4) & 15);
+		crypt[i * 2 + 1] = 'a' + ((txt[i] >> 4) & 15);
 		i++;
 	}
 	crypt[len * 2] = '\0';
@@ -47,7 +47,7 @@ char	*decrypting(char *crypt)
 	i = 0;
 	while (i < len)
 	{
-		txt[i] = ((crypt[i * 2] - 'a') << 4) + (str[(i * 2) + 1] - 'a');
+		txt[i] = ((crypt[i * 2] - 'a') << 4) + (crypt[(i * 2) + 1] - 'a');
 		i++;
 	}
 	txt[i] = '\0';

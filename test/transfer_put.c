@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 16:24:26 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 21:25:49 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/10 23:49:33 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static int	transfer_put_permission(int socket, int fd, DIR *dir)
 
 static int	transfer_put_file(char *buf, int socket, int fd)
 {
-	int	e;
+	int		e;
+	char	*crypt;
 
 	if (ft_strcmp("is a directory", buf) == 0)
 		return (transfer_put_error(socket, 2, fd, NULL));
@@ -74,12 +75,18 @@ static int	transfer_put_file(char *buf, int socket, int fd)
 	if ((e = transfer_put_permission(socket, fd, NULL)) <= 0)
 		return (transfer_put_error(socket, 1, fd, NULL));
 	while ((e = read(fd, buf, 1024)) >= 0 && e >= 0)
-		e = send(socket, buf, ft_strlen(buf), 0);
+	{
+		crypt = crypting(buf);
+		e = send(socket, crypt, ft_strlen(crypt), 0);
+		ft_memdel((void **)&crypt);
+	}
 	close(fd);
-	if (e < 0 || (e = send(socket, buf, ft_strlen(buf), 0)) < 0
-			|| (e = send(socket, "end put", 8, 0)) < 0)
-		return (e);
-	return (1);
+	crypt = crypting(buf);
+	if (e >= 0)
+		e = send(socket, crypt, ft_strlen(crypt), 0) < 0;
+	ft_memdel((void **)&crypt);
+	ft_memdel((void **)&buf);
+	return ((e < 0 || (e = send(socket, "end put", 8, 0)) < 0) ? e : 1);
 }
 
 static int	transfer_put_dir(int socket, DIR *dir, char *arg)
