@@ -6,16 +6,14 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 20:28:56 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 23:55:44 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/11 16:10:25 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_p.h"
 #include <stdbool.h>
+#include <errno.h>
 
-/*
-**	EACCES
-*/
 static const char*	msg[] = {"name disponible", "is a directory", "is a file",
 	"no right"};
 
@@ -43,10 +41,11 @@ static int	transfer_get_check(char *name)
 	int			fd;
 	int			e;
 
+	e = 0;
 	stats = NULL;
-	if ((fd = open(name, O_RDWR)) < 0 && fd != EACCES)
+	if ((fd = open(name, O_RDWR)) < 0 && (e = errno) != EACCES)
 		return (0);
-	else if (fd == EACCES)
+	else if (e == EACCES)
 		return (3);
 	else if ((e = fstat(fd, stats)) < 0)
 	{
@@ -125,6 +124,7 @@ int			transfer_get(int socket)
 	if ((e = recv(socket, buf, 1024, 0)) < 0)
 		return (e);
 	name = ft_strdup(buf);
+ft_putendl(name);
 	ft_putendl(msg[(type = transfer_get_check(name))]);
 	if ((e = send(socket, msg[type], ft_strlen(msg[e]), 0)) < 0
 			|| type > 1 || (e = recv(socket, buf, 1024, 0)) < 0

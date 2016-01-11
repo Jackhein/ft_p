@@ -6,15 +6,15 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/08 10:48:43 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/08 10:51:24 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/11 19:17:23 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#inlcude "libft.h"
+#include "libft.h"
 
-void	ft_strdelelem(char **str, int i)
+void	ft_strdelelem(char *str, size_t i)
 {
-	if (!str || i < 0 || i > ft_strlen(str))
+	if (!str || i > ft_strlen(str))
 		return ;
 	while (str[++i])
 		str[i - 1] = str[i];

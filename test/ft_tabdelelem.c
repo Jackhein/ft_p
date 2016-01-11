@@ -6,20 +6,20 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/06 17:10:19 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/07 18:14:05 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/11 19:18:34 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		ft_tabdelelem(char **tab, int i)
+void		ft_tabdelelem(char **tab, size_t i)
 {
-	int		k;
+	size_t		k;
 
 	k = 0;
 	while (tab && tab[k])
 		k++;
-	if (k < i || i < 0 || !tab)
+	if (k < i || !tab)
 		return ;
 	k = i;
 	while (tab[++k])

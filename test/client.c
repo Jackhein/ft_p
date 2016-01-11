@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/22 16:54:12 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 15:51:36 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/11 19:08:02 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,13 @@ static int	state(char **rc)
 static int	client_send(int sock)
 {
 	int		n;
-	char	*buff;
+	char	*buf;
 
-	while (get_next_line(0, &buff) >= 0
-//			 && (((n = client_spec_cmd((buff = ft_strdelvoid(buff)), sock)) > 0)
-//			|| (n == 0
-			&& send(sock, ft_itoa((n = ft_strlen(buff))), 1024, 0) >= 0
-			&& send(sock, buff, ft_strlen(buff), 0) >= 0)//))
-		;
+	while (get_next_line(0, &buf) >= 0 && ((buf = ft_strdelvoid(buf)) || !buf)
+			 && (((n = client_spec_cmd(buf, sock)) > 0) || (n == 0))
+			&& send(sock, ft_itoa((n = ft_strlen(buf))), 1024, 0) >= 0
+			&& send(sock, buf, ft_strlen(buf), 0) >= 0) 
+		ft_memdel((void **)&buf);
 //		ft_putendl("testo");
 	return (client_error(-4, sock));
 }

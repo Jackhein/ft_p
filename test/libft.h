@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>          +#+  +:+       +#+            */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/15 18:03:32 by tbalea          #+#    #+#               */
-/*   Updated: 2016/01/08 10:52:42 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/11 19:17:53 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void				*ft_memchr(const void *s, int c, size_t n);/*
 int					ft_memcmp(const void *s1, const void *s2, size_t n);*/
 void				ft_memdel(void **del);
 void				ft_tabdel(char **tab);
-void				ft_tabdelelem(char **tab, int i);
+void				ft_tabdelelem(char **tab, size_t i);
 void				*ft_memset(void *mem, int c, size_t size);
 size_t				ft_strlen(const char *str);
 char				*ft_strdup(const char *s1);/*
 char				*ft_strcpy(char *s1, const char *s2);
 char				*ft_strncpy(char *s1, const char *s2, size_t n);*/
-void				ft_strdelelem(char *str, int i);
+void				ft_strdelelem(char *str, size_t i);
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strncat(char *s1, const char *s2, size_t n);/*
 size_t				ft_strlcat(char *dst, const char *src, size_t size);

@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/06 14:45:30 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/07 18:17:03 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/11 19:14:20 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,13 @@ char		*server_epur_access_arg(char *org, char *arg)
 		return (org);
 //ft_putendl("arg");
 //ft_putendl(arg);
-	if (arg[0] == '/' || arg[0] == '~')
+	if (arg[0] == '/')
 		return (arg);
+	else if (arg[0] == '~')
+	{
+		ft_strdelelem(arg, 0);
+		return (ft_strjoin(org, arg));
+	}
 	else
 	{
 //ft_putendl("brake_0_4_1");

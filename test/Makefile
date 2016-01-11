@@ -6,11 +6,15 @@
 #    By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/26 19:02:12 by tbalea            #+#    #+#              #
-#    Updated: 2016/01/08 16:27:53 by tbalea           ###   ########.fr        #
+#    Updated: 2016/01/11 19:15:03 by tbalea           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_p
+
+TRF = transfer_get.c\
+	  transfer_put.c\
+	  transfer_crypt.c\
 
 CLT = client.c\
 	  client_error.c\
@@ -34,6 +38,7 @@ SRC = ft_atoi.c\
 	  ft_isdigit.c\
 	  ft_strlen.c\
 	  ft_strcmp.c\
+	  ft_strdelelem.c\
 	  ft_strdelvoid.c\
 	  ft_strncmp.c\
 	  ft_strnew.c\
@@ -62,8 +67,8 @@ FLG = -Wall -Werror -Wextra -g3
 all: $(NAME)
 
 $(NAME):
-	gcc $(FLG) $(SRC) $(CLT) -o client
-	gcc $(FLG) $(SRC) $(SER) -o serveur
+	gcc $(FLG) $(SRC) $(CLT) $(TRF) -o client
+	gcc $(FLG) $(SRC) $(SER) $(TRF) -o serveur
 
 fclean:
 	rm -f client serveur
