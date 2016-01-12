@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/24 16:11:31 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/08 16:09:47 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/12 17:43:04 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,14 @@ static int	client(int cs)
 	while (42)
 	{
 		rc = (char *)ft_memalloc(1024);
+/*USELESS ?*/
 		if (recv(cs, rc, 1024, 0) < 0)
 			return (end_sock(cs, pwd, rc, -5));
 		n = ft_atoi(rc);
 		ft_bzero(rc, ft_strlen(rc));
 		free(rc);
 		rc = (char *)ft_memalloc(n);
+/*USEFULL ?*/
 		if (n != 0 && (n = recv(cs, rc, n, 0)) < 0)
 			return (end_sock(cs, pwd, rc, -5));
 //		ft_putendl(rc);

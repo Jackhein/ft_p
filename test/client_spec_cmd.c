@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/30 20:49:53 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/11 19:10:35 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/12 17:40:24 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ int			client_spec_cmd(char *buf, int sock)
 	int		r;
 
 	r = 0;
+ft_putendl("csc");
+ft_putendl(buf);
+ft_putendl("csc");
+	if (!buf)
+		return (r);
 	tab = ft_strsplit(buf, ' ');
 //	if (buf == NULL)
 //		r = 0;
@@ -45,10 +50,16 @@ int			client_spec_cmd(char *buf, int sock)
 	if (ft_strncmp("put", buf, 3) == 0 && ft_isempty(buf[3]) && (r = 1)
 			&& (r = send(sock, tab[0], ft_strlen(tab[0]), 0)) >= 0)
 		transfer_put(tab[1], sock);
-	else if (ft_strncmp("get", buf, 3) == 0 && ft_isempty(buf[3])
-			&& (r = send(sock, tab[0], ft_strlen(tab[0]), 0)) >= 0
+	else if (ft_strncmp("get", tab[0], 3) == 0 && ft_isempty(buf[3]))
+{
+ft_putendl("sending");
+if(			 (r = send(sock, tab[0], ft_strlen(tab[0]), 0)) >= 0
 			&& (r = send(sock, tab[1], ft_strlen(tab[1]), 0)) >= 0 && (r = 1))
+ft_putendl(tab[0]);
+ft_putendl(tab[1]);
+ft_putendl("spc_cmd");
 		transfer_get(sock);
+ft_putendl("spc_cmd");}
 	else if (ft_strncmp("mput", buf, 4) == 0 && ft_isempty(buf[4]) && (r = 1))
 	{
 		while (tab++ && (r = send(sock, "put", ft_strlen(tab[0]), 0)) >= 0)

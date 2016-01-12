@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/22 16:54:12 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/11 19:08:02 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/12 15:09:13 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ static int	client_send(int sock)
 			 && (((n = client_spec_cmd(buf, sock)) > 0) || (n == 0))
 			&& send(sock, ft_itoa((n = ft_strlen(buf))), 1024, 0) >= 0
 			&& send(sock, buf, ft_strlen(buf), 0) >= 0) 
+{ft_putendl("send");
 		ft_memdel((void **)&buf);
-//		ft_putendl("testo");
+ft_putendl("testo");}
 	return (client_error(-4, sock));
 }
 
@@ -55,6 +56,7 @@ static int	client_recv(int sock)
 	rc = NULL;
 	while (state(&rc) != 0)
 	{
+ft_putendl("recv");
 		if (recv(sock, rc, 1024, 0) < 0)
 			return (client_error(-5, sock));
 		ft_putstr(rc);

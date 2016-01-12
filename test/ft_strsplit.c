@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/01 00:24:04 by tbalea            #+#    #+#             */
-/*   Updated: 2015/12/29 18:16:32 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/12 18:12:25 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static int	len_str(const char *str, const char c, int b)
 {
-	while (str && str[b] != c)
+	while (str && str[b] != c && str[b] != '\0')
 		b++;
 	return (b);
 }
@@ -70,6 +70,7 @@ char		**ft_strsplit(const char *str, const char c)
 	j = 0;
 	t = count_c(str, c);
 	tab = (char **)malloc((t + 1) * sizeof(char *));
+ft_putendl(ft_itoa(t));
 	while (i < t)
 	{
 		while (str[j] == c)
