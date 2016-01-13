@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/30 20:49:53 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/13 07:51:25 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/13 12:37:56 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int			client_spec_cmd(char *buf, int sock)
 //	int		fd;
 
 	r = 0;
+ft_putendl("spc_cmd-get-0");
+ft_putendl(buf);
 	if (!buf)
 		return (r);
 	tab = ft_strsplit(buf, ' ');
@@ -55,12 +57,15 @@ int			client_spec_cmd(char *buf, int sock)
 	if (ft_strncmp("put", buf, 3) == 0 && ft_isempty(buf[3]))// && (r = 1)
 //			&& (r = send(sock, buf, (ft_strlen(buf)), 0)) >= 0)
 	{
+ft_putstr("c_s_c-put:");ft_putendl(buf);
 		ft_putendl((transfer_put(sock, buf)) ? "Put Ook." : "Put not Ook.");
 		return (1);
 	}
-	else if (ft_strncmp("get", buf, 3) == 0 && ft_isempty(buf[3])
-			&& (r = send(sock, buf, ft_strlen(buf), 0)) < 0)
-{//ft_putendl(tab[0]);
+	else if (ft_strncmp("get", buf, 3) == 0 && ft_isempty(buf[3]))
+{
+ft_putstr("c_s_c-get:");ft_putendl(buf);
+			if ((r = send(sock, buf, ft_strlen(buf), 0)) < 0)
+{ft_putendl("spc_cmd-get");}
 //if(			 (r = send(sock, "get", ft_strlen(tab[0]), 0)) < 0)
 //	return (r);ft_putendl(tab[1]);ft_putendl("testa");
 //			if ((r = send(sock, tab[1], ft_strlen(tab[1]), 0)) >= 0 && (r = 1))

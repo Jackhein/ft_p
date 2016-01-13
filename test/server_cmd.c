@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/30 22:13:48 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/13 07:45:41 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/13 10:16:10 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ char		*server_cmd(char *buff, char *org, int socket)
 		return (server_cd(buff, org));
 	else if (ft_strncmp("get", buff, 3) == 0 && ft_isempty(buff[3]))
 	{
-		buff[0] = 'g';
-		buff[1] = 'e';
-//ft_putendl(">get<");
-//ft_putendl(buff);
+		buff[0] = 'p';
+		buff[1] = 'u';
+ft_putendl(">get<");
+ft_putendl(buff);
 //		if (recv(socket, buff, 1024, 0) < 0)
 //			return ("Wat ?");
 //ft_putendl(">get<");
