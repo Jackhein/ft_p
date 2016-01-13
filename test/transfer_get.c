@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 20:28:56 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/13 12:37:49 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/13 15:14:21 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,27 @@ ft_putstr("check-name :");ft_putendl(name);
 	e = 0;
 	stats = NULL;
 	if ((fd = open(name, O_RDWR)) < 0 && (e = errno) != EACCES)
-{ft_putstr("check-error :");ft_putendl("0");
+//{ft_putstr("check-error :");ft_putendl("0");
 	type = 1;
-}	else if (e == EACCES)
-{ft_putstr("check-EACCES :");ft_putendl(ft_itoa(e));
+//}
+	else if (e == EACCES)
+//{ft_putstr("check-EACCES :");ft_putendl(ft_itoa(e));
 		return (0);
-}	else if ((e = fstat(fd, stats)) < 0)
+//}
+	else if ((e = fstat(fd, stats)) < 0)
 	{
-ft_putstr("check-FD :");ft_putendl(ft_itoa(e));
+//ft_putstr("check-FD :");ft_putendl(ft_itoa(e));
 		close(fd);
 		return (0);
 	}
 	else if (S_ISDIR(stats->st_mode))
 	{
-ft_putstr("check-S_ISDIR :");ft_putendl("1");
+//ft_putstr("check-S_ISDIR :");ft_putendl("1");
 		close(fd);
 		free(stats);
 		return (type ? 3 : 0);
 	}
-ft_putstr("check-OK :");ft_putendl("Ook");
+//ft_putstr("check-OK :");ft_putendl("Ook");
 	close(fd);
 	free(stats);
 	return (type ? 2 : 1);
@@ -130,7 +132,7 @@ int			transfer_get(int socket, char *arg)
 {
 	char	**tab;
 //	char	*name;
-	char	buf[1024];
+//	char	buf[1024];
 	int		e;
 	int		type;
 ft_putendl("get-0");
@@ -156,7 +158,7 @@ ft_putendl(arg);
 	else if (type == 1)// && ft_strcmp(buf, "file") == 0)
 //		function get_file
 		e = transfer_get_file(socket, tab);
-	ft_memdel((void **)&buf);
+//	ft_memdel((void **)&buf);
 	return (e);
 }
 

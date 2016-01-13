@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 16:24:26 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/13 12:37:46 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/13 16:47:57 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,9 @@ static char	*transfer_put_stat(int fd, int type, char *name)
 	int				user;
 
 	int	e;
-	char	buf[1024];
-ft_putendl(getcwd(buf, 1024));
+ft_putstr("FD=");
 ft_putendl(ft_itoa(fd));
-	stats = NULL;
-ft_putstr("Stat-name :");ft_putendl(name);
+	stats = (struct stat *)malloc(sizeof(struct stat));
 	if ((fstat(fd, stats)) < 0){e = errno;ft_putstr("ERROR=");ft_putendl(strerror(e));
 		return (NULL);}
 ft_putendl("Stat-fstat :Ook.");
@@ -95,6 +93,7 @@ static int	transfer_put_file(char *buf, int socket, int fd)
 //	if ((e = transfer_put_stat(socket, fd, NULL)) <= 0)
 //		return (transfer_put_error(socket, 1, fd, NULL));
 	ft_memdel((void **)&buf);
+ft_putendl("PUT_FILE");
 	while ((e = read(fd, buf, 1024)) >= 0 && e >= 0)
 	{
 		crypt = crypting(buf);
@@ -144,20 +143,25 @@ static int	transfer_put_dir(int socket, DIR *dir, int fd, char *data)
 
 int			transfer_put(int socket, char *arg)
 {
-	char			buf[1024];
-	char			*data;
-	DIR				*dir;
-	int				fd;
-	int				e;
+	char	buf[1024];
+	char	*data;
+	DIR		*dir;
+	int		fd;
 
+	char	**tab;
+	int		e;
+
+	tab = ft_strsplit(arg, ' ');
+	ft_putendl(tab[1]);
 	e = 0;
-ft_putendl("put-0");
+//ft_putendl("put-0");
 	if ((e = send(socket, "end put", 8, 0)) < 0)
 		return (e);
-ft_putendl("put-1");
-ft_putendl(arg);
-e = 0;
-	if ((fd = open(arg, 0)) && !S_ISDIR(fd)
+//ft_putendl("put-1");
+//ft_putendl(arg);
+//e = 0;
+ft_putendl("PLUTOT");
+	if ((fd = open(tab[1], 0)) && !S_ISDIR(fd)
 			&& (data = transfer_put_stat(fd, 0, arg))
 			&& (e = send(socket, data, ft_strlen(data), 0)))
 //		if ((e = transfer_put_permission(socket, fd, NULL)) <= 0)
@@ -166,9 +170,10 @@ e = 0;
 //			|| (e = recv(socket, buf, 1024, 0)) < 0)
 //		return (e);
 	{
-ft_putendl("put-1-0");
-ft_putendl(data);
-ft_putendl(arg);
+//ft_putendl("put-1-0");
+//ft_putendl(data);
+//ft_putendl(arg);
+ft_putendl("PUT");
 		if ((e = recv(socket, buf, 1024, 0)) < 0
 				|| ft_strcmp("Transfert impossible.", buf) == 0
 				|| (e = transfer_put_file(buf, socket, fd)) < 0)
@@ -186,12 +191,12 @@ ft_putendl(arg);
 //		if ((e = transfer_put_file(buf, socket, fd)) < 0)
 //			return (e);
 //	}
-	else if ((e =0) == 0 && (dir = opendir(arg)) && ++e && (fd =  dirfd(dir)) && ++e
-			&& (data = transfer_put_stat(fd, 1, arg)) && ++e
-			&& send(socket, data, ft_strlen(data), 0) < 0 && ++e)
+	else if ((dir = opendir(tab[1])) && (fd =  dirfd(dir))
+			&& (data = transfer_put_stat(fd, 1, arg))
+			&& send(socket, data, ft_strlen(data), 0) < 0)
 	{
-ft_putendl("put-1-1");
-ft_putendl(data);
+//ft_putendl("put-1-1");
+//ft_putendl(data);
 		if ((e = recv(socket, buf, 1024, 0)) < 0
 				|| ft_strcmp("Transfert impossible.", buf) == 0
 				|| (e = transfer_put_dir(socket, dir, fd, data)) < 0)
@@ -202,8 +207,9 @@ ft_putendl(data);
 //		if ((e = transfer_put_dir(socket, dir, fd, data)) < 0)
 //			return (e);
 	}
-ft_putstr("Nombres de conditions :");ft_putendl(ft_itoa(e));
-ft_putendl("put-2");
+	ft_tabdel(tab);
+//ft_putstr("Nombres de conditions :");ft_putendl(ft_itoa(e));
+//ft_putendl("put-2");
 //	ft_memdel((void **)&arg);
 //	ft_memdel((void **)&buf);
 //	ft_memdel((void **)&data);
