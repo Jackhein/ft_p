@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/24 16:11:31 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/12 17:43:04 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/12 22:55:51 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	end_sock(int socket, char *pwd, char *recv, int type)
 
 static int	client(int cs)
 {
-	int		n;
+//	int		n;
 	char	*pwd;
 //	<==>--<==>--<==>
 	char	*rc;
@@ -105,15 +105,17 @@ static int	client(int cs)
 	{
 		rc = (char *)ft_memalloc(1024);
 /*USELESS ?*/
-		if (recv(cs, rc, 1024, 0) < 0)
-			return (end_sock(cs, pwd, rc, -5));
-		n = ft_atoi(rc);
-		ft_bzero(rc, ft_strlen(rc));
-		free(rc);
-		rc = (char *)ft_memalloc(n);
+//		if (recv(cs, rc, 1024, 0) < 0)
+//			return (end_sock(cs, pwd, rc, -5));
+//ft_putendl(rc);
+//		n = ft_atoi(rc);
+//		ft_bzero(rc, ft_strlen(rc));
+//		free(rc);
+//		rc = (char *)ft_memalloc(n);
 /*USEFULL ?*/
-		if (n != 0 && (n = recv(cs, rc, n, 0)) < 0)
+		if (/*n != 0 && (n = */recv(cs, rc, 1024, 0) < 0)
 			return (end_sock(cs, pwd, rc, -5));
+ft_putstr("rc = ");ft_putendl(rc);
 //		ft_putendl(rc);
 		sd = server_cmd(rc, pwd, cs);
 //		ft_putendl("before send");

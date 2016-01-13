@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/01 00:24:04 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/12 18:12:25 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/12 20:12:58 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ char		**ft_strsplit(const char *str, const char c)
 	j = 0;
 	t = count_c(str, c);
 	tab = (char **)malloc((t + 1) * sizeof(char *));
-ft_putendl(ft_itoa(t));
 	while (i < t)
 	{
 		while (str[j] == c)

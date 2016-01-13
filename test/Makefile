@@ -6,7 +6,7 @@
 #    By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/26 19:02:12 by tbalea            #+#    #+#              #
-#    Updated: 2016/01/11 19:15:03 by tbalea           ###   ########.fr        #
+#    Updated: 2016/01/13 06:32:33 by tbalea           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRC = ft_atoi.c\
 	  ft_tabjoin.c\
 	  ft_strsplit.c\
 	  ft_strjoin.c\
+	  ft_strcjoin.c\
 	  ft_strtrim.c\
 	  ft_memalloc.c\
 	  ft_memchr.c\

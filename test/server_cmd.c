@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/30 22:13:48 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/12 15:45:50 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/13 07:45:41 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 char		*server_cmd(char *buff, char *org, int socket)
 {
-ft_putendl(buff);
-ft_putendl("popi");
+//ft_putstr("test|");
+//ft_putstr(buff);
+//ft_putendl("|test");
+//ft_putendl("popi");
 	if (buff == NULL)
 		return ("Wat ?");
 	else if (ft_strncmp("ls", buff, 2) == 0 && ft_isempty(buff[2]))
@@ -24,17 +26,24 @@ ft_putendl("popi");
 		return (server_cd(buff, org));
 	else if (ft_strncmp("get", buff, 3) == 0 && ft_isempty(buff[3]))
 	{
-ft_putendl(buff);
-		if (recv(socket, buff, 1024, 0) < 0)
-			return ("Wat ?");
-		return (transfer_put(buff, socket) ? "Put Ook." : "Put Not Ook.");
+		buff[0] = 'g';
+		buff[1] = 'e';
+//ft_putendl(">get<");
+//ft_putendl(buff);
+//		if (recv(socket, buff, 1024, 0) < 0)
+//			return ("Wat ?");
+//ft_putendl(">get<");
+		return (transfer_put(socket, buff) ? "Put Ook." : "Put Not Ook.");
 	}
 	else if (ft_strncmp("put", buff, 3) == 0 && ft_isempty(buff[3]))
-		return (transfer_get(socket) ? "Get Ook." : "Get Not Ook.");
+		return (transfer_get(socket, buff) ? "Get Ook." : "Get Not Ook.");
 	else if (ft_strncmp("pwd", buff, 3) == 0 && ft_isempty(buff[3]))
 		return (server_pwd(buff, org));
 	else if ((ft_strncmp("quit", buff, 4) == 0
 			|| ft_strncmp("exit", buff, 4) == 0) && ft_isempty(buff[4]))
 		return ("quit");
+	else if (ft_strncmp("end put", buff, 7) == 0 && ft_isempty(buff[7]))
+		return (NULL);
+//ft_putendl("popend");
 	return ("Wat ?");
 }

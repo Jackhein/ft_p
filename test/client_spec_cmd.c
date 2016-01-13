@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/30 20:49:53 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/12 17:40:24 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/13 07:51:25 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,19 @@ int			client_spec_cmd(char *buf, int sock)
 {
 	char	**tab;
 	int		r;
+//	int		fd;
 
 	r = 0;
-ft_putendl("csc");
-ft_putendl(buf);
-ft_putendl("csc");
 	if (!buf)
 		return (r);
 	tab = ft_strsplit(buf, ' ');
+//////////////
+//	if (ft_strncmp("testo", buf, 5) == 0 && ft_isempty(buf[5]))
+//	{
+//		if ((fd = open(tab[1])) >= 0 && S_ISDIR(fd))
+//			ft_putendl("testo-yeh");
+//	}
+//////////////
 //	if (buf == NULL)
 //		r = 0;
 //	else if (ft_strncmp("lls", buf, 3) == 0 && ft_isempty(buf[3]))
@@ -47,29 +52,32 @@ ft_putendl("csc");
 //		return (client_pwd(buf, sock));
 //	else if (ft_strncmp("lcd", buf, 3) == 0 && ft_isempty(buf[3]))
 //		return (client_cd(buf, sock));
-	if (ft_strncmp("put", buf, 3) == 0 && ft_isempty(buf[3]) && (r = 1)
-			&& (r = send(sock, tab[0], ft_strlen(tab[0]), 0)) >= 0)
-		transfer_put(tab[1], sock);
-	else if (ft_strncmp("get", tab[0], 3) == 0 && ft_isempty(buf[3]))
-{
-ft_putendl("sending");
-if(			 (r = send(sock, tab[0], ft_strlen(tab[0]), 0)) >= 0
-			&& (r = send(sock, tab[1], ft_strlen(tab[1]), 0)) >= 0 && (r = 1))
-ft_putendl(tab[0]);
-ft_putendl(tab[1]);
-ft_putendl("spc_cmd");
-		transfer_get(sock);
-ft_putendl("spc_cmd");}
+	if (ft_strncmp("put", buf, 3) == 0 && ft_isempty(buf[3]))// && (r = 1)
+//			&& (r = send(sock, buf, (ft_strlen(buf)), 0)) >= 0)
+	{
+		ft_putendl((transfer_put(sock, buf)) ? "Put Ook." : "Put not Ook.");
+		return (1);
+	}
+	else if (ft_strncmp("get", buf, 3) == 0 && ft_isempty(buf[3])
+			&& (r = send(sock, buf, ft_strlen(buf), 0)) < 0)
+{//ft_putendl(tab[0]);
+//if(			 (r = send(sock, "get", ft_strlen(tab[0]), 0)) < 0)
+//	return (r);ft_putendl(tab[1]);ft_putendl("testa");
+//			if ((r = send(sock, tab[1], ft_strlen(tab[1]), 0)) >= 0 && (r = 1))
+/*{ft_putendl("testo");*/
+		ft_putendl(transfer_get(sock, buf) ? "Get Ook." : "Get not Ook.");
+}
+//ft_putendl("spc_cmd-end");}
 	else if (ft_strncmp("mput", buf, 4) == 0 && ft_isempty(buf[4]) && (r = 1))
 	{
 		while (tab++ && (r = send(sock, "put", ft_strlen(tab[0]), 0)) >= 0)
-			transfer_put(*tab, sock);
+			transfer_put(sock, *tab);
 	}
 	else if (ft_strncmp("mget", buf, 4) == 0 && ft_isempty(buf[4]))
 	{
 		while (tab++ && (r = send(sock, "get", ft_strlen("get"), 0)) >= 0
 				&& (r = send(sock, *tab, ft_strlen(*tab), 0)) >= 0)
-			transfer_get(sock);
+			transfer_get(sock, *tab);
 	}
 	ft_tabdel(tab);
 	return (r);

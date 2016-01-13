@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/24 16:50:30 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/10 23:55:20 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/13 07:11:17 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct sockaddr_in SOKADR_IN;
 typedef struct sockaddr SOKADR;
 typedef struct in_addr I_ADR;
 
-int		transfer_put(char *arg, int socket);
-int		transfer_get(int socket);
+int		transfer_put(int socket, char *arg);
+int		transfer_get(int socket, char *arg);
 char	*crypting(char *txt);
 char	*decrypting(char *txt);
 
