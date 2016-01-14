@@ -6,19 +6,20 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 16:24:26 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/13 16:47:57 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/14 21:55:38 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_p.h"
 
 #include <errno.h>
-#include <stdio.h>
+//#include <stdio.h>
 
 /*
 **
 **	ERROR in
-**	stats (open ?)
+**	PERM => OCTAL ('0'---)
+**	FT_MEMDEL to readd
 **
 */
 /*
@@ -46,12 +47,12 @@ static char	*transfer_put_stat(int fd, int type, char *name)
 	int				user;
 
 	int	e;
-ft_putstr("FD=");
-ft_putendl(ft_itoa(fd));
+//ft_putstr("FD=");
+//ft_putendl(ft_itoa(fd));
 	stats = (struct stat *)malloc(sizeof(struct stat));
 	if ((fstat(fd, stats)) < 0){e = errno;ft_putstr("ERROR=");ft_putendl(strerror(e));
 		return (NULL);}
-ft_putendl("Stat-fstat :Ook.");
+//ft_putendl("Stat-fstat :Ook.");
 //		return (transfer_put_error(socket, 0, fd, dir));
 	user = (stats->st_mode & S_IRUSR) ? 1 : 0;
 	user += (stats->st_mode & S_IWUSR) ? 2 : 0;
@@ -62,11 +63,12 @@ ft_putendl("Stat-fstat :Ook.");
 	othr = (stats->st_mode & S_IROTH) ? 1 : 0;
 	othr += (stats->st_mode & S_IWOTH) ? 2 : 0;
 	othr += (stats->st_mode & S_IXOTH) ? 4 : 0;
-ft_putstr("Stat-stats :");ft_putendl(ft_strjoin(ft_itoa(user), ft_strjoin(ft_itoa(team), ft_itoa(othr))));
+//ft_putstr("Stat-stats :");ft_putendl(ft_strjoin(ft_itoa(user), ft_strjoin(ft_itoa(team), ft_itoa(othr))));
 	free(stats);
-	if (user != 3 || user != 7)
+//ft_putstr("User = ");ft_putendl(ft_itoa(user));
+	if (user != 3 && user != 7)
 		return (NULL);
-ft_putstr("Stat-Ook ?");ft_putendl("Ook.");
+//ft_putstr("Stat-Ook ?");ft_putendl("Ook.");
 	return (ft_strcjoin("put", ft_strcjoin(name, ft_strcjoin(ft_itoa(type),\
 			ft_strjoin(ft_itoa(user), ft_strjoin(ft_itoa(team),\
 			ft_itoa(othr))), ' '), ' '), ' '));
@@ -81,7 +83,7 @@ ft_putstr("Stat-Ook ?");ft_putendl("Ook.");
 static int	transfer_put_file(char *buf, int socket, int fd)
 {
 	int		e;
-	char	*crypt;
+//	char	*crypt;
 
 //ft_putendl("put-file-0");
 //ft_putstr("What is iit ? ");
@@ -92,20 +94,24 @@ static int	transfer_put_file(char *buf, int socket, int fd)
 //		return (e);
 //	if ((e = transfer_put_stat(socket, fd, NULL)) <= 0)
 //		return (transfer_put_error(socket, 1, fd, NULL));
-	ft_memdel((void **)&buf);
-ft_putendl("PUT_FILE");
-	while ((e = read(fd, buf, 1024)) >= 0 && e >= 0)
+//	ft_memdel((void **)&buf);
+//ft_putendl("PUT_FILE");
+	e = 0;
+	while (e >= 0 && (e = read(fd, buf, 1024)) > 0)
 	{
-		crypt = crypting(buf);
-		e = send(socket, crypt, ft_strlen(crypt), 0);
-		ft_memdel((void **)&crypt);
+//		crypt = crypting(buf);
+//		e = send(socket, crypt, ft_strlen(crypt), 0);
+		e = send(socket, buf, ft_strlen(buf), 0);
+//ft_putendl(buf);
+//		ft_memdel((void **)&crypt);
 	}
 	close(fd);
-	crypt = crypting(buf);
+//	crypt = crypting(buf);
 	if (e >= 0)
-		e = send(socket, crypt, ft_strlen(crypt), 0) < 0;
-	ft_memdel((void **)&crypt);
-	ft_memdel((void **)&buf);
+//		e = send(socket, crypt, ft_strlen(crypt), 0);
+		e = send(socket, buf, ft_strlen(buf), 0);
+//	ft_memdel((void **)&crypt);
+//	ft_memdel((void **)&buf);
 	return ((e < 0 || (e = send(socket, "end put", 8, 0)) < 0) ? e : 1);
 }
 
@@ -160,7 +166,7 @@ int			transfer_put(int socket, char *arg)
 //ft_putendl("put-1");
 //ft_putendl(arg);
 //e = 0;
-ft_putendl("PLUTOT");
+//ft_putendl("PLUTOT");
 	if ((fd = open(tab[1], 0)) && !S_ISDIR(fd)
 			&& (data = transfer_put_stat(fd, 0, arg))
 			&& (e = send(socket, data, ft_strlen(data), 0)))
@@ -173,7 +179,7 @@ ft_putendl("PLUTOT");
 //ft_putendl("put-1-0");
 //ft_putendl(data);
 //ft_putendl(arg);
-ft_putendl("PUT");
+//ft_putendl("PUT");
 		if ((e = recv(socket, buf, 1024, 0)) < 0
 				|| ft_strcmp("Transfert impossible.", buf) == 0
 				|| (e = transfer_put_file(buf, socket, fd)) < 0)
