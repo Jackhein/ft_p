@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 20:28:56 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/14 21:56:10 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/21 02:05:32 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 
 static const char*	msg[] = {"Transfert impossible.", "Transfert possible."};
 
+//	OCTAL
+/*
 static int	perm_convert(int perm)
 {
 	int	oct;
@@ -41,7 +43,7 @@ ft_putstr("PERM = ");ft_putendl(ft_itoa(perm));
 	}
 printf("octal = %i\n", oct);
 	return (oct);
-}
+}*/
 
 static int	transfer_get_check(char *name, int type)
 {
@@ -84,7 +86,7 @@ static int	transfer_get_dir(int socket, char **tab, bool exist)
 
 //	if ((e = recv(socket, buf, 1024, 0)) < 0
 ft_putstr("PERM = ");ft_putendl(tab[3]);
-	if ((!exist && (e = mkdir(tab[1], perm_convert(ft_atoi(tab[3])))) < 0)
+	if ((!exist && (e = mkdir(tab[1], 0777/*perm_convert(ft_atoi(tab[3]))*/)) < 0)
 			|| (e = chdir(tab[1])) < 0)
 	{
 		ft_tabdel(tab);
@@ -105,15 +107,18 @@ static int	transfer_get_file(int socket, char **tab)
 {
 	int		e;
 	int		fd;
-	off_t	eof;
+//	off_t	eof;
 	char	buf[1024];
 //	char	*crypt;
 
 //ft_putendl(name);
 //	if ((fd = recv(socket, buf, 1024, 0)) < 0
+ft_putstr("WHAT = ");ft_putendl(tab[0]);
+ft_putstr("NAME = ");ft_putendl(tab[1]);
+ft_putstr("TYPE = ");ft_putendl(tab[2]);
 ft_putstr("PERM = ");ft_putendl(tab[3]);
 //!\\ SEGFAULT HERE ? //!\\/
-			if ((fd = open(tab[1], O_CREAT, perm_convert(ft_atoi(tab[3])))) < 0)
+			if ((fd = open(tab[1], O_CREAT, 0777/*perm_convert(ft_atoi(tab[3]))*/)) < 0)
 	{
 		ft_tabdel(tab);
 //		ft_memdel((void **)&name);
@@ -127,10 +132,11 @@ ft_putendl("put file");
 			&& ft_strcmp(buf, "end put") != 0) || e < 0)
 	{
 //		crypt = decrypting(buf);
-		eof = lseek(fd, 0, SEEK_END);
-printf("fd = %i, eof = %zd", fd, eof);
+//		eof = lseek(fd, 0, SEEK_END);
+//printf("fd = %i, eof = %zd", fd, eof);
 //		e = write(eof, crypt, ft_strlen(buf) / 2);
-		e = write(eof, buf, ft_strlen(buf));
+		e = write(fd, buf, ft_strlen(buf));
+ft_putendl("||||||||||||||||||||||||||||||||||||");
 //		ft_memdel((void **)&crypt);
 	}
 	close(fd);
@@ -155,7 +161,7 @@ ft_putendl(arg);
 //	name = ft_strdup(buf);
 ft_putstr("ARG TAB 3 PERM : ");ft_putendl(tab[3]);
 ft_putendl(arg);
-	ft_putendl(msg[(type = transfer_get_check(tab[1], ft_atoi(tab[1])))? 1 : 0]);
+	ft_putendl(msg[(type = transfer_get_check(tab[1], ft_atoi(tab[2])))? 1 : 0]);
 	if ((e = send(socket, msg[type ? 1 : 0], ft_strlen(msg[type? 1 : 0]), 0)) < 0
 			|| type == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 16:24:26 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/14 21:55:38 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/21 01:47:09 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ static int	transfer_put_error(int socket, int error, int fd, DIR *dir)
 static char	*transfer_put_stat(int fd, int type, char *name)
 {
 	struct stat		*stats;
-	int				othr;
-	int				team;
-	int				user;
+	int				perm;
 
 	int	e;
 //ft_putstr("FD=");
@@ -54,24 +52,23 @@ static char	*transfer_put_stat(int fd, int type, char *name)
 		return (NULL);}
 //ft_putendl("Stat-fstat :Ook.");
 //		return (transfer_put_error(socket, 0, fd, dir));
-	user = (stats->st_mode & S_IRUSR) ? 1 : 0;
-	user += (stats->st_mode & S_IWUSR) ? 2 : 0;
-	user += (stats->st_mode & S_IXUSR) ? 4 : 0;
-	team = (stats->st_mode & S_IRGRP) ? 1 : 0;
-	team += (stats->st_mode & S_IWGRP) ? 2 : 0;
-	team += (stats->st_mode & S_IXGRP) ? 4 : 0;
-	othr = (stats->st_mode & S_IROTH) ? 1 : 0;
-	othr += (stats->st_mode & S_IWOTH) ? 2 : 0;
-	othr += (stats->st_mode & S_IXOTH) ? 4 : 0;
+	perm = (stats->st_mode & S_IRUSR) ? 100 : 0;
+	perm += (stats->st_mode & S_IWUSR) ? 200 : 0;
+	perm += (stats->st_mode & S_IXUSR) ? 400 : 0;
+	perm += (stats->st_mode & S_IRGRP) ? 10 : 0;
+	perm += (stats->st_mode & S_IWGRP) ? 20 : 0;
+	perm += (stats->st_mode & S_IXGRP) ? 40 : 0;
+	perm += (stats->st_mode & S_IROTH) ? 1 : 0;
+	perm += (stats->st_mode & S_IWOTH) ? 2 : 0;
+	perm += (stats->st_mode & S_IXOTH) ? 4 : 0;
 //ft_putstr("Stat-stats :");ft_putendl(ft_strjoin(ft_itoa(user), ft_strjoin(ft_itoa(team), ft_itoa(othr))));
 	free(stats);
 //ft_putstr("User = ");ft_putendl(ft_itoa(user));
-	if (user != 3 && user != 7)
+	if (perm / 100 != 3 && perm / 100 != 7)
 		return (NULL);
 //ft_putstr("Stat-Ook ?");ft_putendl("Ook.");
 	return (ft_strcjoin("put", ft_strcjoin(name, ft_strcjoin(ft_itoa(type),\
-			ft_strjoin(ft_itoa(user), ft_strjoin(ft_itoa(team),\
-			ft_itoa(othr))), ' '), ' '), ' '));
+			ft_itoa(perm), ' '), ' '), ' '));
 //		return (transfer_put_error(socket, 1, fd, dir));
 //	if (send(socket, ft_strjoin(ft_itoa(user), ft_strjoin(ft_itoa(team),\
 //						ft_itoa(othr))), ft_strlen(ft_strjoin(ft_itoa(user),\
