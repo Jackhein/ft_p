@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 20:28:56 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/21 02:05:32 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/22 01:52:04 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 static const char*	msg[] = {"Transfert impossible.", "Transfert possible."};
 
 //	OCTAL
-/*
+
 static int	perm_convert(int perm)
 {
 	int	oct;
@@ -43,7 +43,7 @@ ft_putstr("PERM = ");ft_putendl(ft_itoa(perm));
 	}
 printf("octal = %i\n", oct);
 	return (oct);
-}*/
+}
 
 static int	transfer_get_check(char *name, int type)
 {
@@ -52,7 +52,8 @@ static int	transfer_get_check(char *name, int type)
 	int			e;
 
 	e = 0;
-	stats = NULL;
+//printf("GET_CHECK_TYPE_0=%i.\n", type);
+	stats = NULL;//ft_putstr("check-EACCES :");ft_putendl(ft_itoa(type));
 	if ((fd = open(name, O_RDWR)) < 0 && (e = errno) != EACCES)
 //{ft_putstr("check-error :");ft_putendl("0");
 		type = type ? 0 : 1;
@@ -69,11 +70,13 @@ static int	transfer_get_check(char *name, int type)
 //	}
 	else if (S_ISDIR(stats->st_mode))
 	{
+printf("GET_CHECK_TYPE_1=%i.\n", type ? 0 : 1);
 //ft_putstr("check-S_ISDIR :");ft_putendl("1");
 		close(fd);
 		free(stats);
 		return (3);
 	}
+printf("GET_CHECK_TYPE_2=%i.\n", type ? 1 : 2);
 	close(fd);
 	free(stats);
 	return (type ? 1 : 2);
@@ -85,12 +88,12 @@ static int	transfer_get_dir(int socket, char **tab, bool exist)
 	char	buf[1024];
 
 //	if ((e = recv(socket, buf, 1024, 0)) < 0
-ft_putstr("PERM = ");ft_putendl(tab[3]);
-	if ((!exist && (e = mkdir(tab[1], 0777/*perm_convert(ft_atoi(tab[3]))*/)) < 0)
+//ft_putstr("PERM = ");ft_putendl(tab[3]);
+	if ((!exist && (e = mkdir(tab[1], 511/*perm_convert(ft_atoi(tab[3]))*/)) < 0)
 			|| (e = chdir(tab[1])) < 0)
 	{
-		ft_tabdel(tab);
 //		ft_memdel((void **)&buf);
+		ft_tabdel(tab);
 		return (e);
 	}
 //	ft_memdel((void **)&name);
@@ -108,25 +111,30 @@ static int	transfer_get_file(int socket, char **tab)
 	int		e;
 	int		fd;
 //	off_t	eof;
-	char	buf[1024];
+//	char	buf[1024];
+	char	*buf;
+
 //	char	*crypt;
 
+	buf = NULL;
+	buf = (char *)malloc(1024 * sizeof(char));
 //ft_putendl(name);
 //	if ((fd = recv(socket, buf, 1024, 0)) < 0
-ft_putstr("WHAT = ");ft_putendl(tab[0]);
-ft_putstr("NAME = ");ft_putendl(tab[1]);
-ft_putstr("TYPE = ");ft_putendl(tab[2]);
-ft_putstr("PERM = ");ft_putendl(tab[3]);
+//ft_putstr("WHAT = ");ft_putendl(tab[0]);
+//ft_putstr("NAME = ");ft_putendl(tab[1]);
+//ft_putstr("TYPE = ");ft_putendl(tab[2]);
+//ft_putstr("PERM = ");ft_putendl(tab[3]);
 //!\\ SEGFAULT HERE ? //!\\/
-			if ((fd = open(tab[1], O_CREAT, 0777/*perm_convert(ft_atoi(tab[3]))*/)) < 0)
+	if ((fd = open(tab[1], O_CREAT | O_WRONLY,\
+					perm_convert(ft_atoi(tab[3])))) < 0)
 	{
-		ft_tabdel(tab);
 //		ft_memdel((void **)&name);
 //		ft_memdel((void **)&buf);
+		ft_tabdel(tab);
 		return (fd);
 	}
 	ft_tabdel(tab);
-ft_putendl("put file");
+//printf("GET_FILE FD = %i.\n", fd);
 //	ft_memdel((void **)&name);
 	while (((e = recv(socket, buf, 1024, 0)) >= 0
 			&& ft_strcmp(buf, "end put") != 0) || e < 0)
@@ -135,8 +143,11 @@ ft_putendl("put file");
 //		eof = lseek(fd, 0, SEEK_END);
 //printf("fd = %i, eof = %zd", fd, eof);
 //		e = write(eof, crypt, ft_strlen(buf) / 2);
-		e = write(fd, buf, ft_strlen(buf));
+		if ((e = write(fd, buf, ft_strlen(buf))) < 0)
+			break ;
+ft_putendl(buf);
 ft_putendl("||||||||||||||||||||||||||||||||||||");
+		ft_bzero(buf, 1024);
 //		ft_memdel((void **)&crypt);
 	}
 	close(fd);
@@ -161,7 +172,7 @@ ft_putendl(arg);
 //	name = ft_strdup(buf);
 ft_putstr("ARG TAB 3 PERM : ");ft_putendl(tab[3]);
 ft_putendl(arg);
-	ft_putendl(msg[(type = transfer_get_check(tab[1], ft_atoi(tab[2])))? 1 : 0]);
+	ft_putendl(msg[(type = transfer_get_check(tab[1], ft_atoi(tab[2]))) ? 1 : 0]);
 	if ((e = send(socket, msg[type ? 1 : 0], ft_strlen(msg[type? 1 : 0]), 0)) < 0
 			|| type == 0)
 	{

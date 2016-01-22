@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/22 16:54:12 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/13 07:47:36 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/21 19:20:01 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	client_send(int sock)
 	char	*buf;
 
 	while (get_next_line(0, &buf) >= 0 && ((buf = ft_strdelvoid(buf)) || !buf)
-			 && (((n = client_spec_cmd(buf, sock)) > 0) || (n == 0))
+			 && ((n = client_cmd(buf, sock)) >= 0)
 			&& send(sock, ft_itoa((n = ft_strlen(buf))), 1024, 0) >= 0
 			&& send(sock, buf, ft_strlen(buf), 0) >= 0) 
 {ft_putendl("send");
@@ -76,7 +76,7 @@ int			main(int argv, char** argc)
 	int		sock;
 //	int		n;
 	int		child;
-	int		pipefd[2];
+//	int		pipefd[2];
 	int		ret;
 
 //	rc = NULL;
@@ -89,8 +89,8 @@ int			main(int argv, char** argc)
 //	<==>--<==>--<==>
 //	fork recv & send
 //	<==>--<==>--<==>
-	if (pipe(pipefd) < 0)
-		return (client_error(-5, sock));
+//	if (pipe(pipefd) < 0)
+//		return (client_error(-5, sock));
 	else if ((child = fork()) < 0)
 		return (client_error(-6, sock));
 	else if (child == 0)
@@ -99,12 +99,14 @@ int			main(int argv, char** argc)
 //			ft_putendl("testo");
 //		ft_putendl(child_pid);
 //		child = ft_atoi(child_pid);
+//		close(pipefd[1]);
 		ret = client_recv(sock);
 		kill(0/*ft_atoi(child_pid)*/, SIGTERM);
 	}
 	else
 	{
 //		write(pipefd[0], ft_itoa(child), ft_strlen(ft_itoa(child)));
+//		close(pipefd[0]);
 		ret = client_send(sock);
 		kill(0, SIGTERM);
 	}
@@ -118,7 +120,7 @@ int			main(int argv, char** argc)
 		if (get_next_line(0, &buff) < 0)
 			return (client_error(-4, sock));
 //		ft_putendl("testo-0");
-		if (((n = client_spec_cmd((buff = ft_strdelvoid(buff)), sock)) < 0)
+		if (((n = client_cmd((buff = ft_strdelvoid(buff)), sock)) < 0)
 				|| (n == 0
 				&& (send(sock, ft_itoa((n = ft_strlen(buff))), 1024, 0) < 0
 				|| send(sock, buff, ft_strlen(buff), 0) < 0)))

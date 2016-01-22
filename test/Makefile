@@ -6,7 +6,7 @@
 #    By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/26 19:02:12 by tbalea            #+#    #+#              #
-#    Updated: 2016/01/13 06:32:33 by tbalea           ###   ########.fr        #
+#    Updated: 2016/01/21 19:19:17 by tbalea           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ TRF = transfer_get.c\
 	  transfer_crypt.c\
 
 CLT = client.c\
+	  client_cmd.c\
 	  client_error.c\
-	  client_spec_cmd.c\
 	  client_rcv.c\
 	  client_create.c\
 
