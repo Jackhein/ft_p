@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/01 03:50:24 by tbalea            #+#    #+#             */
-/*   Updated: 2015/06/01 04:09:43 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/22 22:48:11 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,14 @@
 
 static int	len_i(int i)
 {
-	int	n;
+	int	len;
 
-	n = 0;
-	while (i != 0 && ++n)
+	int	a;
+	a = i;
+	len = (i == 0) ? 1 : 0;
+	while (i != 0 && ++len)
 		i /= 10;
-	return (n);
-}
-
-static char	*val_min(void)
-{
-	char	*str;
-
-	if ((str = ft_strnew(11)) == NULL)
-		return (NULL);
-	str = "-2147483648";
-	return (str);
+	return (len);
 }
 
 char		*ft_itoa(int i)
@@ -38,18 +30,21 @@ char		*ft_itoa(int i)
 	int		neg;
 	int		len;
 
-	neg = 0;
-	if (i < 0)
-		neg = 1;
-	len = len_i(i);
 	if (i == -2147483648)
-		return (str = val_min());
-	if ((str = ft_strnew(len + neg)) == NULL)
+	{
+		if ((str = ft_strnew(11)) == NULL)
+			return (NULL);
+		str = "-2147483648";
+		return (str);
+	}
+	neg = (i < 0) ? 1 : 0;
+	len = len_i(i);
+	if ((str = ft_strnew(neg + len)) == NULL)
 		return (NULL);
 	if (neg)
 		str[0] = '-';
-	str[len + neg] = '\0';
-	while (i != 0)
+	str[neg + len] = '\0';
+	while (len > 0)
 	{
 		str[--len + neg] = i % 10 + '0';
 		i /= 10;

@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/24 16:11:31 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/13 12:37:51 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/24 19:27:16 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ static int	client(int cs)
 /*USEFULL ?*/
 		if (/*n != 0 && (n = */recv(cs, rc, 1024, 0) < 0)
 			return (end_sock(cs, pwd, rc, -5));
-ft_putstr("rc = ");ft_putendl(rc);
-ft_putstr("|||");
+//ft_putstr("rc = ");ft_putendl(rc);
+//ft_putstr("|||");
 //		ft_putendl(rc);
 		sd = server_cmd(rc, pwd, cs);
 //		ft_putendl("before send");

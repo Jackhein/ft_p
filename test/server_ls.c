@@ -6,12 +6,13 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/31 16:01:07 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/08 14:23:01 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/24 20:45:12 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
+#include <errno.h>
 //	To Do :
 //	-Secure path ls (cf server_cd.c)
 //	-Norme
@@ -49,9 +50,13 @@ char		*server_ls(char *buff, char *org, int sock)
 	int		child;
 
 	int		pipefd[2];
+//	int		*pipefd;
 	char	buf[1024];
 	int		n;
 
+//pipefd = (int *)malloc(2 * sizeof(int));
+//ft_putstr("ORG = ");ft_putendl(org);
+//ft_putstr("buff = ");ft_putendl(buff);
 	if (secur_ls(org, buff) != 0)
 		return ("ls function fail - Access denied");
 	tab = ft_strsplit(buff, ' ');
@@ -63,6 +68,11 @@ char		*server_ls(char *buff, char *org, int sock)
 	{
 //		if (close(pipefd[1]) < 0)// || close(pipefdsend[0]) < 0)
 //			return ("ls function fil - close error");
+/*		if ((WIFEXITED(s) && WEXITSTATUS(s) != 0) || WIFSIGNALED(s))
+{ft_putendl("ERROR:");
+ft_putendl(strerror(errno));
+			return ("ls function fail");
+}*/
 		if (dup2(pipefd[0], 0) < 0)
 			exit(-1);
 		wait4(child, &s, 0, NULL);
@@ -70,15 +80,17 @@ char		*server_ls(char *buff, char *org, int sock)
 		while (tab[++i])
 			ft_memdel((void **)&tab[i]);
 		free(tab);
-		if ((WIFEXITED(s) && WEXITSTATUS(s) != 0) || WIFSIGNALED(s))
-			return ("ls function fail");
+//ft_putendl("LS 0");
+//ft_putendl("LS 1");
 		while ((n = read(pipefd[0], buf, 1024)) >= 1024)
 		{
 //			if (send(sock, ft_itoa(n), 1024, 0) < 0)
 //				return ("ls function fail");
+//ft_putendl("LS 2");
 			if ((send(sock, buf, n, 0) < 0))
 				return ("ls function fail");
 		}
+//ft_putendl("LS 3");
 		if (//send(sock, ft_itoa(n), 1024, 0) < 0
 				(send(sock, buf, n, 0) < 0))
 			return ("ls function fail");
@@ -87,9 +99,15 @@ char		*server_ls(char *buff, char *org, int sock)
 	{
 //		if (close(pipefd[0]) < 0)// || close(pipefdsend[0]) < 0)
 //			return ("ls function fil - close error");
+//ft_putendl("0 LS");
 		if (dup2(pipefd[1], 1) < 0 || dup2(pipefd[1], 2) < 0)
+//{ft_putendl("ERROR:");
+//ft_putendl(strerror(errno));
 			exit(-1);
+//}
+//ft_putendl("1 LS");
 		execv("/bin/ls", tab);
+//ft_putendl("2 LS");
 		exit(EXIT_FAILURE);
 	}
 	return ("ls function succeed");
