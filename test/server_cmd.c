@@ -6,16 +6,42 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/30 22:13:48 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/24 22:01:53 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/25 04:00:37 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-static char	*mget(char *buff)
+static char	*put_and_mput(char *buff, int socket)
 {
 	char	**tab;
-	char	arg;
+	char	*put;
+	int		multi;
+	int		i;
+	int		putok;
+
+	i = 0;
+	tab = ft_strsplit(buff, ' ');
+	multi = (ft_strncmp("mput", buff, 4) == 0) ? 1 : 0;
+	ft_resizestr(&buff, 1024, 1024);
+	while (tab[++i] && (multi || i < 2))
+	{
+		put = ft_strjoin("get ", tab[i]);
+		if (send(socket, put, ft_strlen(put), 0) < 0
+				|| recv(socket, buff, 1024, 0) < 0)
+			return ("Transfer put error");
+		putok = transfer_get(socket, buff);
+		if (send(socket, (putok > 0) ? "Get Ook." : "Get Not Ook.",\
+					putok ? 8 : 12 , 0) < 0)
+			return ("Transfer put error");
+	}
+	return (multi ? "mput done" : "put done");
+}
+
+static char	*mget(char *buff, int socket)
+{
+	char	**tab;
+	char	*arg;
 	int		i;
 	int		e;
 
@@ -55,9 +81,10 @@ char		*server_cmd(char *buff, char *org, int socket)
 //ft_putendl(">get<");
 		return (transfer_put(socket, buff) ? "Put Ook." : "Put Not Ook.");
 	}
-	else if (ft_strncmp("put", buff, 3) == 0 && ft_isempty(buff[3]))
 //{ft_putendl("SRV_PUT");
-		return (transfer_get(socket, buff) ? "Get Ook." : "Get Not Ook.");
+	else if ((ft_strncmp("mput", buff, 4) == 0 && ft_isempty(buff[4]))
+			|| (ft_strncmp("put", buff, 3) == 0 && ft_isempty(buff[3])))
+		return (put_and_mput(buff, socket));//transfer_get(socket, buff) ? "Get Ook." : "Get Not Ook.");
 //}
 	else if (ft_strncmp("pwd", buff, 3) == 0 && ft_isempty(buff[3]))
 		return (server_pwd(buff, org));
@@ -67,7 +94,7 @@ char		*server_cmd(char *buff, char *org, int socket)
 	else if (ft_strncmp("end put", buff, 7) == 0 && ft_isempty(buff[7]))
 		return ("");
 	else if (ft_strncmp("mget", buff, 4) == 0 && ft_isempty(buff[4]))
-		return (mget(buff));
+		return (mget(buff, socket));
 //ft_putendl("END SRV_CMD");
 	return ("Wat ?");
 }

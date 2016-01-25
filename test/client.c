@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/22 16:54:12 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/24 19:27:41 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/25 03:58:01 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,36 @@
 //	-Do Get/Put
 //	-Archivaze
 
+/*static int	client_put(int sock, char *rc)
+{
+	char	**tab;
+	char	*put;
+	int		i;
+	int		e;
+	int		multi;
+ft_putendl("CLIENT_PUT");
+	e = 0;
+	i = 1;
+	tab = ft_strsplit(rc, ' ');
+	multi = (ft_strncmp("mput", tab[i], 4) == 0) ? 1 : 0;
+	while (tab[++i] && (multi || i < 3) && e >= 0)
+	{
+		put = ft_strjoin("put ", tab[i]);
+		ft_putstr((e = transfer_put(sock, put)) ? "Put Ook " : "Put Not Ook ");
+		ft_putendl(tab[i]);
+		ft_memdel((void **)&put);
+	}
+	ft_tabdel(tab);
+	return (e >= 0 ? 1 : -1);
+}*/
+
 static int	state(char **rc)
 {
 	if (*rc == NULL || ft_strcmp("quit", *rc) != 0)
 	{
+		if (ft_strlen(*rc) < 1024)
+			ft_putstr("\n~nipaa~ ");
 		ft_resizestr(rc, ft_strlen(*rc), 1024);
-		ft_putstr("\n~nipaa~ ");
 		return (1);
 	}
 	ft_resizestr(rc, ft_strlen(*rc), -1);
@@ -39,9 +63,9 @@ static int	client_send(int sock)
 	char	*buf;
 
 	while (get_next_line(0, &buf) >= 0 && ((buf = ft_strdelvoid(buf)) || !buf)
-			 && ((n = client_cmd(buf, sock)) >= 0)
-			&& send(sock, ft_itoa((n = ft_strlen(buf))), 1024, 0) >= 0
-			&& send(sock, buf, ft_strlen(buf), 0) >= 0) 
+			 && ((n = client_cmd(buf/*, sock*/)) >= 0) && (n == 1
+	//		&& send(sock, ft_itoa((n = ft_strlen(buf))), 1024, 0) >= 0
+			|| send(sock, buf, ft_strlen(buf), 0) >= 0)) 
 //{ft_putendl("send");
 		ft_memdel((void **)&buf);
 //ft_putendl("testo");}
@@ -59,8 +83,15 @@ static int	client_recv(int sock)
 //ft_putendl("recv");
 		if (recv(sock, rc, 1024, 0) < 0)
 			return (client_error(-5, sock));
-		if (ft_strncmp("put", rc, 3) == 0)
-			transfer_get(sock, rc);
+		if (ft_strncmp("put", rc, 3) == 0 && transfer_get(sock, rc) < 0)
+			return (client_error(-5, sock));
+		else if (ft_strncmp("get", rc, 3) == 0)
+		{
+			rc[0] = 'p';
+			rc[1] = 'u';
+			if (transfer_put(sock, rc) < 0)
+				return (client_error(-5, sock));
+		}
 		else
 			ft_putstr(rc);
 //		ft_resizestr(&rc, 1024, 1024);

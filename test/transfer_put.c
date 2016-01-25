@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 16:24:26 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/24 21:31:11 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/25 04:11:48 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ buf = (char *)malloc(1024 * sizeof(char));
 //	if (e >= 0)
 //		e = send(socket, crypt, ft_strlen(crypt), 0);
 //		e = send(socket, buf, ft_strlen(buf), 0);
-	sleep(2);
+	sleep(1);
 //	ft_memdel((void **)&crypt);
 //	ft_memdel((void **)&buf);
 	return ((e < 0 || (e = send(socket, "end put", 8, 0)) < 0) ? e : 1);
@@ -195,8 +195,9 @@ int			transfer_put(int socket, char *arg)
 	{
 //ft_putendl("put-1-1");
 //ft_putendl(data);
-		if ((e = recv(socket, buf, 1024, 0)) < 0
-				|| ft_strcmp("Transfert impossible.", buf) == 0
+		e = recv(socket, buf, 1024, 0);
+		ft_putendl(buf);
+   		if (e < 0 || ft_strcmp("Transfert impossible.", buf) == 0
 //				|| (e = transfer_put_dir(socket, dir, fd, data)) < 0)
 				|| (e = transfer_put_dir(socket, dir, fd, tab[1])) < 0)
 			return ((e < 0) ? -1 : 0);
@@ -219,8 +220,9 @@ int			transfer_put(int socket, char *arg)
 //ft_putendl(data);
 //ft_putendl(arg);
 //ft_putendl("PUT");
-		if ((e = recv(socket, buf, 1024, 0)) < 0
-				|| ft_strcmp("Transfert impossible.", buf) == 0
+		e = recv(socket, buf, 1024, 0);
+		ft_putendl(buf);
+		if (e < 0 || ft_strcmp("Transfert impossible.", buf) == 0
 				|| (e = transfer_put_file(/*buf, */socket, fd)) < 0)
 			return ((e < 0) ? -1 : 0);
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 20:28:56 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/24 21:17:08 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/25 04:05:51 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static const char*	msg[] = {"Transfert impossible.", "Transfert possible."};
 
 //	OCTAL
 
-static int	perm_convert(int perm)
+/*static int	perm_convert(int perm)
 {
 	int	oct;
 	int	rem;
@@ -43,7 +43,7 @@ static int	perm_convert(int perm)
 	}
 //printf("octal = %i\n", oct);
 	return (oct);
-}
+}*/
 
 static int	transfer_get_check(char *name, int type)
 {
@@ -88,7 +88,7 @@ static int	transfer_get_dir(int socket, char **tab, bool exist)
 	char	buf[1024];
 
 //	if ((e = recv(socket, buf, 1024, 0)) < 0
-//ft_putstr("PERM = ");ft_putendl(tab[3]);
+ft_putstr("PERM = ");ft_putendl(tab[3]);
 	if ((!exist && (e = mkdir(tab[1], 0777/*perm_convert(ft_atoi(tab[3]))*/)) < 0)
 			|| (e = chdir(tab[1])) < 0)
 	{
@@ -96,7 +96,7 @@ static int	transfer_get_dir(int socket, char **tab, bool exist)
 		ft_tabdel(tab);
 		return (e);
 	}
-//ft_putstr("CHDIR = ");ft_putendl(tab[1]);
+ft_putstr("CHDIR = ");ft_putendl(tab[1]);
 //	ft_memdel((void **)&name);
 	while (e >= 0 && (e = recv(socket, buf, 1024, 0)) >= 0
 			&& ft_strcmp(buf, "end dir") != 0)
@@ -128,7 +128,7 @@ static int	transfer_get_file(int socket, char **tab)
 //ft_putstr("PERM = ");ft_putendl(tab[3]);
 //!\\ SEGFAULT HERE ? //!\\/
 	if ((fd = open(tab[1], O_CREAT | O_WRONLY,\
-					perm_convert(ft_atoi(tab[3])))) < 0)
+					0777/*perm_convert(ft_atoi(tab[3]))*/)) < 0)
 	{
 //		ft_memdel((void **)&name);
 //		ft_memdel((void **)&buf);

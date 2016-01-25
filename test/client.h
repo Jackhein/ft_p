@@ -6,7 +6,7 @@
 /*   By: tbalea <tbalea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/22 16:52:46 by tbalea            #+#    #+#             */
-/*   Updated: 2016/01/21 19:19:39 by tbalea           ###   ########.fr       */
+/*   Updated: 2016/01/25 03:58:15 by tbalea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 int	client_create(char *addr, char *port);
 int	client_error(int type, int sock);
-int	client_cmd(char *buff, int sock);
+int	client_cmd(char *buff/*, int sock*/);
 int	client_rcv(int sock, char **rc);
 
 #endif
